@@ -178,7 +178,7 @@ test('Textbox:help', function (tape) {
 });
 
 test('Textbox:value', function (tape) {
-  tape.plan(3);
+  tape.plan(4);
 
   tape.strictEqual(
     new Textbox({
@@ -208,6 +208,16 @@ test('Textbox:value', function (tape) {
     }).getLocals().value,
     '1.1',
     'should handle numeric values');
+
+  tape.strictEqual(
+    new Textbox({
+      type: t.Integer,
+      options: {},
+      ctx: ctx,
+      value: 1
+    }).getLocals().value,
+    '1',
+    'should handle integer values');
 
 });
 
