@@ -24,9 +24,12 @@ npm install tcomb-form-native
 
 # Supported react-native versions
 
-- tcomb-form-native ^0.5: react-native >= 0.25.0
-- tcomb-form-native ^0.4: react-native >= 0.20.0
-- tcomb-form-native ^0.3: react-native < 0.13.0
+| Version | React Native Support | Android Support | iOS Support |
+|---|---|---|---|
+| 0.5 - 0.6.1 | 0.25.0 - 0.35.0 | 7.1 | 10.0.2 |
+| 0.4 | 0.20.0 - 0.24.0 | 7.1 | 10.0.2 |
+| 0.3 | 0.1.0 - 0.13.0  | 7.1 | 10.0.2 |
+*Complies with [react-native-version-support-table](https://github.com/dangnelson/react-native-version-support-table)*
 
 ### Domain Driven Forms
 
@@ -255,7 +258,7 @@ var AwesomeProject = React.createClass({
 
   onChange(value) {
     // tcomb immutability helpers
-    // https://github.com/gcanti/tcomb/blob/master/GUIDE.md#updating-immutable-instances
+    // https://github.com/gcanti/tcomb/blob/master/docs/API.md#updating-immutable-instances
     var options = t.update(this.state.options, {
       fields: {
         name: {
@@ -560,6 +563,7 @@ When using a `t.Date` type in Android, it can be configured through a `config` o
 |-----|-------|
 | ``background`` | Determines the type of background drawable that's going to be used to display feedback. Optional, defaults to ``TouchableNativeFeedback.SelectableBackground``. |
 | ``format`` | A ``(date) => String(date)`` kind of function to provide a custom date format parsing to display the value. Optional, defaults to ``(date) => String(date)``.
+| ``dialogMode`` | Determines the type of datepicker mode for Android (`default`, `spinner` or `calendar`).
 
 ### Enums
 
@@ -1109,6 +1113,38 @@ const options = {
 });
 ```
 
+When dealing with `t.list`, make sure to declare the `fields` property inside the `item` property, as such:
+
+```js
+const Documents = t.struct({
+  type: t.Number,
+  value: t.String
+})
+
+const Person = t.struct({
+  name: t.Struct,
+  documents: t.list(Documents)
+});
+
+const options = {
+  fields: {
+    name: { /*...*/ },
+    documents: {
+      item: {
+        fields: {
+          type: {
+            // Documents t.struct 'type' options
+          },
+          value: {
+            // Documents t.struct 'value' options
+          }
+        }
+      }
+    }
+  }
+}
+```
+
 ## Internationalization
 
 You can override the default language (english) with the `i18n` option:
@@ -1308,13 +1344,13 @@ For a complete example see the default template https://github.com/gcanti/tcomb-
 
 ## i18n
 
-tcomb-form-native comes with a default internationalization (English). You can customize the look and feel by setting another i18n:
+tcomb-form-native comes with a default internationalization (English). You can change it by setting another i18n object:
 
 ```js
 var t = require('tcomb-form-native/lib');
 var templates = require('tcomb-form-native/lib/templates/bootstrap');
 
-// define a stylesheet (see tcomb-form-native/lib/i18n/en for an example)
+// define an object containing your translations (see tcomb-form-native/lib/i18n/en for an example)
 var i18n = {...};
 
 // override globally the default i18n
